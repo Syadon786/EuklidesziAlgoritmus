@@ -1,5 +1,6 @@
 ﻿import fs from "fs";
 import http from "http";
+import { stringify } from "querystring";
 import url from "url";
 
 interface InputInterface {
@@ -31,27 +32,42 @@ export default class Content {
         let masodik: number = parseInt(y.masodik as string);
 
         if (isNaN(elso) || elso < 0 || elso > 999999999999999) elso = 0;
-        res.write(`Kérem az első számot [0-999999999999999]: <input type='text' name='elso' value=${elso} style='width:10em;' onChange='this.form.submit();'>\n`);
+        res.write(`Kérem az első számot [0-999999999999999]: <input type='text' maxlength='15' name='elso' value=${elso} style='width:10em;' onChange='this.form.submit();'>\n`);
         if (isNaN(masodik) || masodik < 0 || masodik > 999999999999999) masodik = 0;
-        res.write(`Kérem a második számot [0-999999999999999]: <input type='text' name='masodik' value=${masodik} style='width:10em;' onChange='this.form.submit();'>\n`);
+        res.write(`Kérem a második számot [0-999999999999999]: <input type='text'  maxlength='15' name='masodik' value=${masodik} style='width:10em;' onChange='this.form.submit();'>\n`);
 
         let lnko: number = 0;
         let aktMaradek: number = 0;
         let osztas: number = 0;
+        let tabulator: string = "\t\t";
+        let tabulator2: string = "\t\t";
         if (masodik > 0 || elso > 0) {
-            res.write("\ta\tb\ta/b\n");
+            res.write("\ta\t\tb\t\ta/b\n");
             if (masodik == 0) {
                 lnko = elso;
-                res.write(`\t${elso}\t${masodik}\n`);
+                if (elso.toString().length > 7) {
+                    tabulator = "\t";
+                }
+                res.write(`\t${elso}${tabulator}${masodik}\n`);
             } else {
                 do {
                     aktMaradek = elso % masodik;
                     osztas = Math.floor(elso / masodik);
-                    res.write(`\t${elso}\t${masodik}\t${osztas}\n`);
+                    if (elso.toString().length > 7) {
+                        tabulator = "\t";
+                    } else {
+                        tabulator = "\t\t";
+                    }
+                    if (masodik.toString().length > 7) {
+                        tabulator2 = "\t";
+                    } else {
+                        tabulator2 = "\t\t";
+                    }
+                    res.write(`\t${elso}${tabulator}${masodik}${tabulator2}${osztas}\n`);
                     elso = masodik;
                     masodik = aktMaradek;
                 } while (aktMaradek != 0);
-                res.write(`\t${elso}\t${masodik}\n`);
+                res.write(`\t${elso}${tabulator}${masodik}\n`);
                 lnko = elso;
             }
             res.write(`\nA legnagyobb közös osztó: ${lnko}!\n`);
