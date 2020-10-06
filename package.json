@@ -1,7 +1,7 @@
 {
-    "name": "jedlik-typescript-vscode-template",
+    "name": "typescript-vscode",
     "version": "1.0.0",
-    "description": "Jedlik project template for using TypeScript, Jest and Node.js in VS Code.",
+    "description": "",
     "engines": {
         "node": "13.x"
     },
