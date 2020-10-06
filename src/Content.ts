@@ -34,12 +34,32 @@ export default class Content {
         const y = url.parse(req.url as string, true).query;
         let elso: number = parseInt(x.elso as string);
         let masodik: number = parseInt(y.masodik as string);
+
         if (isNaN(elso) || elso < 0 || elso > 999999999999999) elso = 0; // egy kis ellenőrzés
         res.write(`Kérem az első számot [0-999999999999999]: <input type='text' name='elso' value=${elso} style='width:3em;' onChange='this.form.submit();'>\n`);
         if (isNaN(masodik) || masodik < 0 || masodik > 999999999999999) masodik = 0; // egy kis ellenőrzés
         res.write(`Kérem a második számot [0-999999999999999]: <input type='text' name='masodik' value=${masodik} style='width:3em;' onChange='this.form.submit();'>\n`);
-        res.write(`Az első szám ${elso}!\n`);
-        res.write(`Az első szám ${masodik}!\n`);
+
+        let lnko: number = 0;
+        let aktMaradek: number = 0;
+        let osztas: number = 0;
+        let aktElso: number = elso;
+        let aktMasodik: number = masodik;
+        res.write("a\tb\ta/b\n");
+        if (masodik == 0) {
+            lnko = elso;
+        } else {
+            do {
+                aktMaradek = elso % masodik;
+                osztas = Math.floor(elso / masodik);
+                res.write(`${elso}\t${masodik}\t${osztas}\n`);
+                elso = masodik;
+                masodik = aktMaradek;
+            } while (aktMaradek != 0);
+            res.write(`${elso}\t${masodik}\n`);
+            lnko = elso;
+        }
+        res.write(`A legnagyobb közös osztó: ${lnko}!\n`);
 
         // <---- Fejezd be a kódolást
 
