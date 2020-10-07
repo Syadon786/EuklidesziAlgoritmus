@@ -41,28 +41,31 @@ export default class Content {
         let osztas: number = 0;
         let tabulator: string = "\t\t";
         let tabulator2: string = "\t\t";
+
+        function Tabulator(x: number): string {
+            let tab: string = "";
+            if (x.toString().length > 7) {
+                tab = "\t";
+            } else {
+                tab = "\t\t";
+            }
+            return tab;
+        }
+
         if (masodik > 0 || elso > 0) {
             res.write("\ta\t\tb\t\ta/b\n");
             if (masodik == 0) {
                 lnko = elso;
-                if (elso.toString().length > 7) {
-                    tabulator = "\t";
-                }
+                tabulator = Tabulator(elso);
                 res.write(`\t${elso}${tabulator}${masodik}\n`);
             } else {
                 do {
                     aktMaradek = elso % masodik;
                     osztas = Math.floor(elso / masodik);
-                    if (elso.toString().length > 7) {
-                        tabulator = "\t";
-                    } else {
-                        tabulator = "\t\t";
-                    }
-                    if (masodik.toString().length > 7) {
-                        tabulator2 = "\t";
-                    } else {
-                        tabulator2 = "\t\t";
-                    }
+
+                    tabulator = Tabulator(elso);
+                    tabulator2 = Tabulator(masodik);
+
                     res.write(`\t${elso}${tabulator}${masodik}${tabulator2}${osztas}\n`);
                     elso = masodik;
                     masodik = aktMaradek;
