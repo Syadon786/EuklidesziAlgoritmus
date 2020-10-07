@@ -75,7 +75,7 @@ export default class Content {
             }
             res.write(`\nA legnagyobb közös osztó: ${lnko}!\n`);
         }
-
+        res.write("\n\n<a href='https://github.com/Syadon786/EuklidesziAlgoritmus'>https://github.com/Syadon786/EuklidesziAlgoritmus</a>");
         res.write("</pre></form></body></html>");
         res.end();
     }
